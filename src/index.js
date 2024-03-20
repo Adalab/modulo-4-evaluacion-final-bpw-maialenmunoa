@@ -139,8 +139,34 @@ app.put("/api/recetas/:id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error al actualizar la receta:", error);
-    res.status(500).json({ success: false, message: "Error al actualizar la receta" });
+    res
+      .status(500)
+      .json({ success: false, message: "Error al actualizar la receta" });
   }
 });
 
 // DELETE /api/recetas/:id - Eliminar una receta por su id
+app.delete("/api/recetas/:id", async (req, res) => {
+  const recetaId = req.params.id;
+
+  try {
+    const connection = await getConnection();
+    const [result] = await connection.execute(
+      "DELETE FROM recetas WHERE id = ?",
+      [recetaId]
+    );
+    connection.end(); // Cierra la conexión
+
+    // Verificar si la eliminación fue exitosa
+    if (result.affectedRows === 1) {
+      return res.json({ success: true });
+    } else {
+      throw new Error("No se pudo eliminar la receta");
+    }
+  } catch (error) {
+    console.error("Error al eliminar la receta:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al eliminar la receta" });
+  }
+});
