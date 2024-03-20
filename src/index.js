@@ -61,7 +61,7 @@ app.get("/api/recetas/:id", async (req, res) => {
       "SELECT * FROM recetas WHERE id = ?",
       [id]
     );
-    connection.end(); // Cierra la conexión 
+    connection.end(); // Cierra la conexión
 
     // Comprobar si se encontró la receta
     if (rows.length === 0) {
@@ -82,5 +82,36 @@ app.get("/api/recetas/:id", async (req, res) => {
 });
 
 // POST /api/recetas - Crear una nueva receta
+app.post("/api/recetas", async (req, res) => {
+  const { nombre, ingredientes, instrucciones } = req.body; // Obtener la información de la receta del body
+
+  try {
+    // Verificar si los valores necesarios están definidos
+    if (!nombre || !ingredientes || !instrucciones) {
+      throw new Error("Uno o más campos de la receta no están definidos");
+    }
+
+    const connection = await getConnection();
+    const [result] = await connection.execute(
+      "INSERT INTO recetas (nombre, ingredientes, instrucciones) VALUES (?, ?, ?)",
+      [nombre, ingredientes, instrucciones]
+    );
+    connection.end(); // Cierra la conexión
+
+    // Verificar si la inserción fue exitosa
+    if (result.affectedRows === 1) {
+      const nuevo_id = result.insertId;
+      return res.json({ success: true, id: nuevo_id });
+    } else {
+      throw new Error("No se pudo crear la receta");
+    }
+  } catch (error) {
+    console.error("Error al crear la receta:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al crear la receta" });
+  }
+});
+
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 // DELETE /api/recetas/:id - Eliminar una receta por su id
