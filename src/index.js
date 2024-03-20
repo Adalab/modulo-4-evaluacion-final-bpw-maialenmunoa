@@ -34,29 +34,24 @@ app.listen(port, () => {
 // ENDPOINTS
 
 // GET /api/recetas - Obtener todas las recetas
+app.get("/api/recetas", async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const [rows] = await connection.execute("SELECT * FROM recetas");
+    connection.end(); // Cerrar la conexión
+
+    const numOfElements = rows.length;
+
+    res.json({ info: { count: numOfElements }, results: rows });
+  } catch (error) {
+    console.error("Error al obtener las recetas:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al obtener las recetas" });
+  }
+});
+
 // GET /api/recetas/:id - Obtener una receta por su id
 // POST /api/recetas - Crear una nueva receta
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 // DELETE /api/recetas/:id - Eliminar una receta por su id
-
-app.get("/api/testdb", async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const [rows, fields] = await connection.execute("SELECT * FROM recetas");
-    connection.end(); // Cierra la conexión después de usarla
-
-    res.json({
-      success: true,
-      message: "Conexión exitosa a la base de datos",
-      rows,
-    });
-  } catch (error) {
-    console.error("Error al conectar a la base de datos:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error al conectar a la base de datos",
-      });
-  }
-});
