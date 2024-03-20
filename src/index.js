@@ -1,8 +1,14 @@
 // IMPORTAR BIBLIOTECAS
 const express = require("express");
 const cors = require("cors");
+
 require("dotenv").config();
+
 const mysql = require("mysql2/promise");
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 // CREAR VARIABLES
 const app = express();
@@ -13,12 +19,12 @@ app.use(cors());
 app.use(express.json({ limit: "25Mb" }));
 
 // CONFIGURACIÓN MSYQL
-const getConnection = async () => {
+const getConnection = async (database) => {
   const connection = await mysql.createConnection({
     host: process.env.MYSQL_HOST || "localhost",
     user: process.env.MYSQL_USER || "root",
     password: process.env.MYSQL_PASS,
-    database: process.env.MYSQL_SCHEMA || "recetas_db",
+    database: database || "recetas_db", // Usar recetas_db si no se especifica otra base de datos
   });
 
   await connection.connect();
@@ -30,7 +36,6 @@ const getConnection = async () => {
 app.listen(port, () => {
   console.log(`Server has benn started in <http://localhost:${port}>`);
 });
-
 
 // ENDPOINTS
 
@@ -46,12 +51,9 @@ app.get("/api/recetas", async (req, res) => {
     res.json({ info: { count: numOfElements }, results: rows });
   } catch (error) {
     console.error("Error al obtener las recetas:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Ha ocurrido un error" });
+    res.status(500).json({ success: false, message: "Ha ocurrido un error" });
   }
 });
-
 
 // GET /api/recetas/:id - Obtener una receta por su id
 app.get("/api/recetas/:id", async (req, res) => {
@@ -77,12 +79,9 @@ app.get("/api/recetas/:id", async (req, res) => {
     res.json({ success: true, recipe });
   } catch (error) {
     console.error("Error al obtener la receta:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Ha ocurrido un error" });
+    res.status(500).json({ success: false, message: "Ha ocurrido un error" });
   }
 });
-
 
 // GET /api/recetas/ingrediente/:ingrediente - Obtener una receta por un ingrediente
 app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
@@ -106,15 +105,12 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
     }
   } catch (error) {
     console.error("Error al obtener la receta por ingrediente:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Ha ocurrido un error",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Ha ocurrido un error",
+    });
   }
 });
-
 
 // POST /api/recetas - Crear una nueva receta
 app.post("/api/recetas", async (req, res) => {
@@ -142,12 +138,9 @@ app.post("/api/recetas", async (req, res) => {
     }
   } catch (error) {
     console.error("Error al crear la receta:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Ha ocurrido un error" });
+    res.status(500).json({ success: false, message: "Ha ocurrido un error" });
   }
 });
-
 
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 app.put("/api/recetas/:id", async (req, res) => {
@@ -175,12 +168,9 @@ app.put("/api/recetas/:id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error al actualizar la receta:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Ha ocurrido un error" });
+    res.status(500).json({ success: false, message: "Ha ocurrido un error" });
   }
 });
-
 
 // DELETE /api/recetas/:id - Eliminar una receta por su id
 app.delete("/api/recetas/:id", async (req, res) => {
@@ -202,8 +192,54 @@ app.delete("/api/recetas/:id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error al eliminar la receta:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Ha ocurrido un error" });
+    res.status(500).json({ success: false, message: "Ha ocurrido un error" });
   }
 });
+
+//POST /registro - Crear un nuevo usuario en la base de datos
+app.post("/registro", async (req, res) => {
+  const { email, nombre, password } = req.body;
+
+  try {
+    // Verificar si los campos requeridos están presentes
+    if (!email || !nombre || !password) {
+      throw new Error("El email, nombre y contraseña son obligatorios");
+    }
+
+    // Verificar si el email ya existe en la base de datos
+    const connection = await getConnection('usuarios_db');
+    const [existingUsers] = await connection.execute(
+      "SELECT * FROM usuarios WHERE email = ?",
+      [email]
+    );
+    connection.end();
+
+    if (existingUsers.length > 0) {
+      throw new Error("Este email ya está registrado");
+    }
+
+    // Hash de la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Guardar el usuario en la base de datos
+    const insertUserQuery =
+      "INSERT INTO usuarios (email, nombre, password) VALUES (?, ?, ?)";
+    const insertUserParams = [email, nombre, hashedPassword];
+
+    const insertUserConnection = await getConnection('usuarios_db');
+    await insertUserConnection.execute(insertUserQuery, insertUserParams);
+    insertUserConnection.end();
+
+    // Crear y devolver el token JWT
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({ success: true, token });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+//POST /login - Iniciar sesión con un usuario existente
