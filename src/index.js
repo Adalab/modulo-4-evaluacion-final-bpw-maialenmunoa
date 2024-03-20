@@ -52,6 +52,35 @@ app.get("/api/recetas", async (req, res) => {
 });
 
 // GET /api/recetas/:id - Obtener una receta por su id
+app.get("/api/recetas/:id", async (req, res) => {
+  const { id } = req.params; // Obtener el ID de la receta de los parámetros de la URL
+
+  try {
+    const connection = await getConnection();
+    const [rows] = await connection.execute(
+      "SELECT * FROM recetas WHERE id = ?",
+      [id]
+    );
+    connection.end(); // Cierra la conexión 
+
+    // Comprobar si se encontró la receta
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Receta no encontrada" });
+    }
+
+    const recipe = rows[0]; // Obtener la primera (y única) fila de resultados
+
+    res.json({ success: true, recipe });
+  } catch (error) {
+    console.error("Error al obtener la receta:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error al obtener la receta" });
+  }
+});
+
 // POST /api/recetas - Crear una nueva receta
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 // DELETE /api/recetas/:id - Eliminar una receta por su id
