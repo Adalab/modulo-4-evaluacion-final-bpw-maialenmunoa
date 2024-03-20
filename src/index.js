@@ -283,3 +283,27 @@ app.post("/login", async (req, res) => {
     res.status(401).json({ success: false, error: error.message });
   }
 });
+
+// Middleware de autenticación
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Token de autenticación no proporcionado" });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: "Token de autenticación inválido" });
+    }
+
+    // Si el token es válido, adjunta el objeto decodificado (contiene información del usuario) al objeto de solicitud
+    req.user = decoded;
+
+    // Continuar con la solicitud
+    next();
+  });
+};
+
+// Aplicar el middleware de autenticación a todas las rutas del API de recetas
+app.use("/api/recetas", authenticateToken);
