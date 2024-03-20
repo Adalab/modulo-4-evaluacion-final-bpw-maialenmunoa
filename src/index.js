@@ -31,6 +31,7 @@ app.listen(port, () => {
   console.log(`Server has benn started in <http://localhost:${port}>`);
 });
 
+
 // ENDPOINTS
 
 // GET /api/recetas - Obtener todas las recetas
@@ -47,9 +48,10 @@ app.get("/api/recetas", async (req, res) => {
     console.error("Error al obtener las recetas:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error al obtener las recetas" });
+      .json({ success: false, message: "Ha ocurrido un error" });
   }
 });
+
 
 // GET /api/recetas/:id - Obtener una receta por su id
 app.get("/api/recetas/:id", async (req, res) => {
@@ -77,9 +79,10 @@ app.get("/api/recetas/:id", async (req, res) => {
     console.error("Error al obtener la receta:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error al obtener la receta" });
+      .json({ success: false, message: "Ha ocurrido un error" });
   }
 });
+
 
 // GET /api/recetas/ingrediente/:ingrediente - Obtener una receta por un ingrediente
 app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
@@ -107,10 +110,11 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
       .status(500)
       .json({
         success: false,
-        message: "Error al obtener la receta por ingrediente",
+        message: "Ha ocurrido un error",
       });
   }
 });
+
 
 // POST /api/recetas - Crear una nueva receta
 app.post("/api/recetas", async (req, res) => {
@@ -140,9 +144,10 @@ app.post("/api/recetas", async (req, res) => {
     console.error("Error al crear la receta:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error al crear la receta" });
+      .json({ success: false, message: "Ha ocurrido un error" });
   }
 });
+
 
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 app.put("/api/recetas/:id", async (req, res) => {
@@ -172,9 +177,10 @@ app.put("/api/recetas/:id", async (req, res) => {
     console.error("Error al actualizar la receta:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error al actualizar la receta" });
+      .json({ success: false, message: "Ha ocurrido un error" });
   }
 });
+
 
 // DELETE /api/recetas/:id - Eliminar una receta por su id
 app.delete("/api/recetas/:id", async (req, res) => {
@@ -198,6 +204,6 @@ app.delete("/api/recetas/:id", async (req, res) => {
     console.error("Error al eliminar la receta:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error al eliminar la receta" });
+      .json({ success: false, message: "Ha ocurrido un error" });
   }
 });
