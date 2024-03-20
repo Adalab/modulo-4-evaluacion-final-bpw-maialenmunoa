@@ -6,9 +6,8 @@ require("dotenv").config();
 
 const mysql = require("mysql2/promise");
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // CREAR VARIABLES
 const app = express();
@@ -207,7 +206,7 @@ app.post("/registro", async (req, res) => {
     }
 
     // Verificar si el email ya existe en la base de datos
-    const connection = await getConnection('usuarios_db');
+    const connection = await getConnection("usuarios_db");
     const [existingUsers] = await connection.execute(
       "SELECT * FROM usuarios WHERE email = ?",
       [email]
@@ -226,7 +225,7 @@ app.post("/registro", async (req, res) => {
       "INSERT INTO usuarios (email, nombre, password) VALUES (?, ?, ?)";
     const insertUserParams = [email, nombre, hashedPassword];
 
-    const insertUserConnection = await getConnection('usuarios_db');
+    const insertUserConnection = await getConnection("usuarios_db");
     await insertUserConnection.execute(insertUserQuery, insertUserParams);
     insertUserConnection.end();
 
@@ -242,4 +241,45 @@ app.post("/registro", async (req, res) => {
   }
 });
 
-//POST /login - Iniciar sesión con un usuario existente
+//POST /login - Iniciar sesión 
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Verificar si los campos requeridos están presentes
+    if (!email || !password) {
+      throw new Error("El email y la contraseña son obligatorios");
+    }
+
+    // Buscar al usuario en la base de datos usuarios_db
+    const connection = await getConnection("usuarios_db");
+    const [users] = await connection.execute(
+      "SELECT * FROM usuarios WHERE email = ?",
+      [email]
+    );
+    connection.end();
+
+    // Verificar si el usuario existe
+    if (users.length === 0) {
+      throw new Error("El email o la contraseña son incorrectos");
+    }
+
+    const user = users[0]; // Obtener el primer usuario encontrado
+
+    // Verificar si la contraseña es correcta
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new Error("El email o la contraseña son incorrectos");
+    }
+
+    // Crear y devolver el token JWT
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({ success: true, token });
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    res.status(401).json({ success: false, error: error.message });
+  }
+});
