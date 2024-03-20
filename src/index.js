@@ -114,4 +114,33 @@ app.post("/api/recetas", async (req, res) => {
 });
 
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
+app.put("/api/recetas/:id", async (req, res) => {
+  const recetaId = req.params.id;
+  const { nombre, ingredientes, instrucciones } = req.body;
+
+  try {
+    // Verificar si los valores necesarios están definidos
+    if (!nombre || !ingredientes || !instrucciones) {
+      throw new Error("Uno o más campos de la receta no están definidos");
+    }
+
+    const connection = await getConnection();
+    const [result] = await connection.execute(
+      "UPDATE recetas SET nombre = ?, ingredientes = ?, instrucciones = ? WHERE id = ?",
+      [nombre, ingredientes, instrucciones, recetaId]
+    );
+    connection.end(); // Cierra la conexión
+
+    // Verificar si la actualización fue exitosa
+    if (result.affectedRows === 1) {
+      return res.json({ success: true });
+    } else {
+      throw new Error("No se pudo actualizar la receta");
+    }
+  } catch (error) {
+    console.error("Error al actualizar la receta:", error);
+    res.status(500).json({ success: false, message: "Error al actualizar la receta" });
+  }
+});
+
 // DELETE /api/recetas/:id - Eliminar una receta por su id
