@@ -1,0 +1,26 @@
+{
+  "name": "server-recipes",
+  "version": "1.0.0",
+  "description": "Express server for recipes",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adalab/modulo-4-evaluacion-final-bpw-maialenmunoa.git"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "server",
+    "fullstack",
+    "mysql"
+  ],
+  "author": "Maialen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-maialenmunoa/issues"
+  },
+  "homepage": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-maialenmunoa#readme"
+}
