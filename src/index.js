@@ -81,6 +81,37 @@ app.get("/api/recetas/:id", async (req, res) => {
   }
 });
 
+// GET /api/recetas/ingrediente/:ingrediente - Obtener una receta por un ingrediente
+app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
+  const ingrediente = req.params.ingrediente;
+
+  try {
+    const connection = await getConnection();
+    const [results] = await connection.execute(
+      "SELECT * FROM recetas WHERE ingredientes LIKE ?",
+      [`%${ingrediente}%`]
+    );
+    connection.end(); // Cierra la conexión
+
+    // Verificar si se encontraron recetas con el ingrediente especificado
+    if (results.length > 0) {
+      return res.json(results);
+    } else {
+      throw new Error(
+        "No se encontraron recetas con el ingrediente especificado"
+      );
+    }
+  } catch (error) {
+    console.error("Error al obtener la receta por ingrediente:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error al obtener la receta por ingrediente",
+      });
+  }
+});
+
 // POST /api/recetas - Crear una nueva receta
 app.post("/api/recetas", async (req, res) => {
   const { nombre, ingredientes, instrucciones } = req.body; // Obtener la información de la receta del body
