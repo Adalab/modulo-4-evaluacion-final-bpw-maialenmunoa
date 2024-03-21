@@ -20,7 +20,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   gap: 30px;
 
   &__input {
@@ -55,9 +55,10 @@
 
 .recipes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 40px;
   text-align: center;
+  margin: 0 100px;
 
   &__li {
     list-style: none;
@@ -69,8 +70,6 @@
 
   &__card {
     position: relative;
-    width: 500px; /* Tamaño del contenedor cuadrado */
-    height: 500px; /* Tamaño del contenedor cuadrado */
     border-radius: 5px;
     overflow: hidden;
 
@@ -80,19 +79,25 @@
       object-fit: cover; /* Ajusta la imagen para que cubra todo el contenedor */
       border-radius: 8px;
       filter: brightness(0.7);
+      aspect-ratio: 1/1; 
     }
 
     &-text {
       position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translatey(-50%);
       margin: 0;
-      padding: 10px;
+      padding: 20px;
       font-size: 2.5rem;
       font-weight: 700;
       color: #ffffff;
       border-radius: 5px;
+      width: 100%;
     }
   }
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
 }

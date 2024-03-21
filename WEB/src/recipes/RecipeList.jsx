@@ -15,9 +15,9 @@ function RecipeList({ recipes }) {
   ));
 
   return (
-    <>
+    <div className="content">
       <ul className="recipes"> {renderRecipes} </ul>
-    </>
+    </div>
   )
 }
 
