@@ -117,14 +117,14 @@ app.post("/api/recetas", async (req, res) => {
 
   try {
     // Verificar si los valores necesarios están definidos
-    if (!nombre || !ingredientes || !instrucciones) {
+    if (!nombre || !ingredientes || !instrucciones || !imagen) {
       throw new Error("Uno o más campos de la receta no están definidos");
     }
 
     const connection = await getConnection();
     const [result] = await connection.execute(
-      "INSERT INTO recetas (nombre, ingredientes, instrucciones) VALUES (?, ?, ?)",
-      [nombre, ingredientes, instrucciones]
+      "INSERT INTO recetas (nombre, ingredientes, instrucciones, imagen) VALUES (?, ?, ?, ?)",
+      [nombre, ingredientes, instrucciones, imagen]
     );
     connection.end(); // Cierra la conexión
 
@@ -144,19 +144,20 @@ app.post("/api/recetas", async (req, res) => {
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
 app.put("/api/recetas/:id", async (req, res) => {
   const recetaId = req.params.id;
-  const { nombre, ingredientes, instrucciones } = req.body;
+  const { nombre, ingredientes, instrucciones, imagen } = req.body;
 
   try {
     // Verificar si los valores necesarios están definidos
-    if (!nombre || !ingredientes || !instrucciones) {
+    if (!nombre || !ingredientes || !instrucciones || !imagen) {
       throw new Error("Uno o más campos de la receta no están definidos");
     }
 
     const connection = await getConnection();
     const [result] = await connection.execute(
-      "UPDATE recetas SET nombre = ?, ingredientes = ?, instrucciones = ? WHERE id = ?",
-      [nombre, ingredientes, instrucciones, recetaId]
+      "UPDATE recetas SET nombre = ?, ingredientes = ?, instrucciones = ?, imagen = ? WHERE id = ?",
+      [nombre, ingredientes, instrucciones, imagen, recetaId]
     );
+    5;
     connection.end(); // Cierra la conexión
 
     // Verificar si la actualización fue exitosa
@@ -241,12 +242,12 @@ app.post("/registro", async (req, res) => {
   }
 });
 
-//POST /login - Iniciar sesión 
+//POST /login - Iniciar sesión
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Verificar si los campos requeridos están presentes
+    // Verificar si los campos obligatorios están presentes
     if (!email || !password) {
       throw new Error("El email y la contraseña son obligatorios");
     }
@@ -259,17 +260,18 @@ app.post("/login", async (req, res) => {
     );
     connection.end();
 
-    // Verificar si el usuario existe
+    // Verificar si se encontró un usuario con el email proporcionado
     if (users.length === 0) {
-      throw new Error("El email o la contraseña son incorrectos");
+      throw new Error("El email es incorrecto");
     }
 
-    const user = users[0]; // Obtener el primer usuario encontrado
+    const user = users[0]; // Obtener el primer email encontrado
 
-    // Verificar si la contraseña es correcta
+
+    // Verificar si la contraseña coincide
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      throw new Error("El email o la contraseña son incorrectos");
+      throw new Error("La contraseña es incorrecta");
     }
 
     // Crear y devolver el token JWT
@@ -284,17 +286,27 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Middleware de autenticación
+// Middleware de autenticación para verificar el token JWT 
 const authenticateToken = (req, res, next) => {
+  // Obtener el token de la cabecera de autorización
   const token = req.headers.authorization;
 
+// Verificar si se proporcionó un token
   if (!token) {
-    return res.status(401).json({ success: false, message: "Token de autenticación no proporcionado" });
+    return res
+      .status(401)
+      .json({
+        success: false,
+        message: "Token de autenticación no proporcionado",
+      });
   }
 
+  // Verificar si el token es válido
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ success: false, message: "Token de autenticación inválido" });
+      return res
+        .status(403)
+        .json({ success: false, message: "Token de autenticación inválido" });
     }
 
     // Si el token es válido, adjunta el objeto decodificado (contiene información del usuario) al objeto de solicitud
