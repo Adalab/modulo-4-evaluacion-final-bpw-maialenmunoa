@@ -1,10 +1,11 @@
 /* Tabla recetas */
 CREATE TABLE `recetas_db`.`recetas` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(265) NOT NULL,
-  `ingredientes` VARCHAR(265) NOT NULL,
-  `instrucciones` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`));
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(265) NOT NULL,
+  `ingredientes` varchar(265) NOT NULL,
+  `instrucciones` longtext NOT NULL,
+  `imagen` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`)
 
 
 /* Usuarios */

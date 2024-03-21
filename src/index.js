@@ -42,7 +42,7 @@ app.listen(port, () => {
 app.get("/api/recetas", async (req, res) => {
   try {
     const connection = await getConnection();
-    const [rows] = await connection.execute("SELECT * FROM recetas");
+    const [rows] = await connection.query("SELECT * FROM recetas");
     connection.end(); // Cerrar la conexión
 
     const numOfElements = rows.length;
@@ -60,7 +60,7 @@ app.get("/api/recetas/:id", async (req, res) => {
 
   try {
     const connection = await getConnection();
-    const [rows] = await connection.execute(
+    const [rows] = await connection.query(
       "SELECT * FROM recetas WHERE id = ?",
       [id]
     );
@@ -70,7 +70,7 @@ app.get("/api/recetas/:id", async (req, res) => {
     if (rows.length === 0) {
       return res
         .status(404)
-        .json({ success: false, message: "Receta no encontrada" });
+        .json({ success: false, message: "Oops! Receta no encontrada" });
     }
 
     const recipe = rows[0]; // Obtener la primera (y única) fila de resultados
@@ -88,7 +88,7 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
 
   try {
     const connection = await getConnection();
-    const [results] = await connection.execute(
+    const [results] = await connection.query(
       "SELECT * FROM recetas WHERE ingredientes LIKE ?",
       [`%${ingrediente}%`]
     );
@@ -113,7 +113,7 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
 
 // POST /api/recetas - Crear una nueva receta
 app.post("/api/recetas", async (req, res) => {
-  const { nombre, ingredientes, instrucciones } = req.body; // Obtener la información de la receta del body
+  const { nombre, ingredientes, instrucciones, imagen } = req.body; // Obtener la información de la receta del body
 
   try {
     // Verificar si los valores necesarios están definidos
