@@ -10,3 +10,7 @@ UPDATE `recetas_db`.`recetas` SET `imagen` = 'https://img.freepik.com/foto-grati
 UPDATE `recetas_db`.`recetas` SET `imagen` = 'https://img.freepik.com/foto-gratis/pedazo-pastel-delicioso-placa_23-2149162681.jpg' WHERE (`id` = '3');
 UPDATE `recetas_db`.`recetas` SET `imagen` = 'https://img.freepik.com/fotos-premium/galletas-torta-dulce-libres-hechas-casa-gluten-ramas-tomillo-viejo-fondo-madera_80013-3112.jpg?w=740' WHERE (`id` = '4');
 UPDATE `recetas_db`.`recetas` SET `imagen` = 'https://thesoulfooding.es/wp-content/uploads/2021/12/IMG_4892.jpg' WHERE (`id` = '5');
+
+UPDATE `recetas_db`.`recetas` SET `ingredientes` = 'queso crema, huevos, azúcar, harina, nata.', `imagen` = 'https://thesoulfooding.es/wp-content/uploads/2021/12/IMG_4892.jpg' WHERE (`id` = '1');
+DELETE FROM `recetas_db`.`recetas` WHERE (`id` = '10');
+UPDATE `recetas_db`.`recetas` SET `nombre` = 'Brownie', `ingredientes` = 'cacao en polvo, mantequilla, huevos, azúcar, harina, esencia de vainilla, nueces.', `instrucciones` = 'Derretir la mantequilla con el cacao en polvo a fuego lento, dejar enfriar y añadir los huevos, uno a uno, y la vainilla. En otro recipiente mezclar la harina con el azúcar y las nueces. Mezclar ambas preparaciones y remover con suavidad hasta tener una masa homogénea. Hornear durante 35-40 minutos a 180º.', `imagen` = 'https://images.pexels.com/photos/2067396/pexels-photo-2067396.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' WHERE (`id` = '5');
