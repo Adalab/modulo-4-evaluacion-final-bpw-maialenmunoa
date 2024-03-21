@@ -319,3 +319,10 @@ const authenticateToken = (req, res, next) => {
 
 // Aplicar el middleware de autenticación a todas las rutas del API de recetas
 app.use("/api/recetas", authenticateToken);
+
+// DEFINIR SERVIDORES ESTÁTICOS
+
+const staticServerPathWeb = "../public";
+app.use(express.static(staticServerPathWeb));
+
+
