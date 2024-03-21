@@ -9,16 +9,16 @@ import "../scss/App.scss";
 
 function RecipeList({ recipes }) {
   const renderRecipes = recipes.map((recipe) => (
-    <li key={recipe.id}>
+    <li key={recipe.id} className="recipes__li">
       <RecipeCard recipe={recipe} />
     </li>
   ));
 
   return (
-    <section className="recipes">
-      <ul> {renderRecipes} </ul>
-    </section>
-  );
+    <>
+      <ul className="recipes"> {renderRecipes} </ul>
+    </>
+  )
 }
 
 RecipeList.propTypes = {
