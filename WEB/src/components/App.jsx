@@ -53,11 +53,11 @@ function App() {
 
   return (
     <div className="page">
-      <header>
+      <header className="header">
         <h1>Mis Recetas</h1>
       </header>
 
-      <main>
+      <main className="main">
         <Filters />
         <RecipeList recipes={recipes} />
       </main>

@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 
 function IngredientFilter() {
   return (
-    <div className="filters__input">
-      <input
+    <div>
+      <input className="filters__input"
         type="text"
         id="ingredient-filter"
         placeholder="Buscar por ingrediente..."

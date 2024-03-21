@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import RecipeCard from "./RecipeCard";
 
 //Importar estilos
+import "../scss/App.scss";
 
 
 function RecipeList({ recipes }) {
@@ -14,7 +15,7 @@ function RecipeList({ recipes }) {
   ));
 
   return (
-    <section className="list">
+    <section className="recipes">
       <ul> {renderRecipes} </ul>
     </section>
   );

@@ -2,15 +2,15 @@ import PropTypes from "prop-types";
 
 //Importar estilos
 
+import "../scss/App.scss";
+
 
 function RecipeCard({ recipe }) {
   return (
-    <div className="recipes">
       <div className="recipes__card">
-        <img src={recipe.imagen} alt={recipe.nombre} />
-        <h2>{recipe.nombre}</h2>
+        <img className="recipes__img" src={recipe.imagen} alt={recipe.nombre} />
+        <h2 className="recipes__text">{recipe.nombre}</h2>
       </div>
-    </div>
   );
 }
 

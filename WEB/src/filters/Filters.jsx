@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
+
 
 // Importar componentes
 import IngredientFilter from "./IngredientFilter";
 import RadioFilter from "./RadioFilter";
 
 // Importar estilos
-
+import "../scss/App.scss";
 
 function Filters() {
   return (
@@ -19,8 +19,8 @@ function Filters() {
       </label>
 
       {/* Botón de reset */}
-      <button className="form__reset" type="button">
-        <span className="form__trash-icon">
+      <button className="filters__reset" type="button">
+        <span className="filters__trash-icon">
           <i className="fa-solid fa-trash-can"></i>
         </span>
       </button>
