@@ -2,16 +2,12 @@
 
 @font-face {
   font-family: "title";
-  src: url("../scss/fonts/Basteleur-Bold.otf") format("otf");
-  font-weight: bold;
-  font-style: normal;
+  src: url("../scss/fonts/Basteleur-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "text";
-  src: url("../scss/fonts/Basteleur-Moonlight.otf") format("otf");
-  font-weight: normal; 
-  font-style: normal;
+  src: url("../scss/fonts/Basteleur-Moonlight.ttf") format("truetype");
 }
 
 .page {
@@ -21,8 +17,9 @@
 .header {
   text-align: center;
   padding: 30px 0;
-  color: #5a5a5a;
+  color: #392a08;
   font-family: "title";
+  font-size: 2rem;
 }
 
 .main {
@@ -39,7 +36,7 @@
   &__input {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #5a5a5a;
+    border: 1px solid #392a08;
     font-size: 1rem;
     color: #5a5a5a;
     width: 250px;
@@ -102,7 +99,7 @@
       margin: 0;
       padding: 20px;
       font-family: text;
-      font-size: 2.5rem;
+      font-size: 2.1rem;
       color: #e7f569;
       border-radius: 5px;
       width: 100%;

@@ -10,7 +10,6 @@ function App() {
   //variables de estado
   const [recipes, setRecipes] = useState([]);
   const [filterIngredient, setFilterIngredient] = useState(''); 
-  const [errorMessage, setErrorMessage] = useState(''); 
 
 
   useEffect(() => {
