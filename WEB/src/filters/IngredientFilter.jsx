@@ -3,12 +3,19 @@ import PropTypes from "prop-types";
 // Importar estilos
 
 
-function IngredientFilter() {
+function IngredientFilter({handleFilter, filterIngredient}) {
+
+  const handleInputIngredient = (event) => {
+    handleFilter('ingredient', event.currentTarget.value);
+  };
+
   return (
     <div>
       <input className="filters__input"
         type="text"
         id="ingredient-filter"
+        onInput={handleInputIngredient} 
+        value={filterIngredient}
         placeholder="Buscar por ingrediente..."
       />
     </div>
@@ -16,10 +23,8 @@ function IngredientFilter() {
 }
 
 IngredientFilter.propTypes = {
-  /**
-   * Filtro de búsqueda por ingrediente
-   */
-  onSearch: PropTypes.func,
+  handleFilter: PropTypes.func.isRequired,
+  filterIngredient: PropTypes.string.isRequired,
 };
 
 export default IngredientFilter;

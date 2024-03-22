@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 
 // Importar componentes
 import IngredientFilter from "./IngredientFilter";
@@ -7,14 +7,14 @@ import RadioFilter from "./RadioFilter";
 // Importar estilos
 import "../scss/App.scss";
 
-function Filters() {
+function Filters({ handleFilter, filterIngredient }) {
   return (
     <form className="filters">
       <label htmlFor="ingredient-filter">
-        <IngredientFilter />
+        <IngredientFilter handleFilter={handleFilter} filterIngredient={filterIngredient} />
       </label>
 
-      <label htmlFor="ingredient-filter">
+      <label htmlFor="radio-filter">
         <RadioFilter />
       </label>
 
@@ -27,5 +27,15 @@ function Filters() {
     </form>
   );
 }
+
+Filters.propTypes = {
+  handleFilter: PropTypes.func.isRequired,
+  filterIngredient: PropTypes.string,
+};
+
+Filters.defaultProps = {
+  filterIngredient: '', // Valor predeterminado para filterIngredient
+};
+
 
 export default Filters;
