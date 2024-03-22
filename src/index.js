@@ -36,6 +36,40 @@ app.listen(port, () => {
   console.log(`Server has benn started in <http://localhost:${port}>`);
 });
 
+// Middleware de autenticación para verificar el token JWT
+const authenticateToken = (req, res, next) => {
+  // Obtener el token de la cabecera de autorización
+  let token = req.headers.authorization;
+
+  // Verificar si se proporcionó un token
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Token de autenticación no proporcionado",
+    });
+  }
+
+  // Verificar si el token es válido
+  token = req.headers.authorization.split(" ")[1];
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res
+        .status(403)
+        .json({ success: false, message: "Token de autenticación no válido" });
+    }
+
+    // Si el token es válido, adjunta el objeto decodificado (contiene información del usuario) al objeto de solicitud
+    req.user = decoded;
+
+    // Continuar con la solicitud
+    next();
+  });
+};
+
+// Aplicar el middleware de autenticación a todas las rutas del API de recetas
+app.use("/api/recetas", authenticateToken);
+
 // ENDPOINTS
 
 // GET /api/recetas - Obtener todas las recetas
@@ -267,7 +301,6 @@ app.post("/login", async (req, res) => {
 
     const user = users[0]; // Obtener el primer email encontrado
 
-
     // Verificar si la contraseña coincide
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
@@ -286,43 +319,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Middleware de autenticación para verificar el token JWT 
-const authenticateToken = (req, res, next) => {
-  // Obtener el token de la cabecera de autorización
-  const token = req.headers.authorization;
-
-// Verificar si se proporcionó un token
-  if (!token) {
-    return res
-      .status(401)
-      .json({
-        success: false,
-        message: "Token de autenticación no proporcionado",
-      });
-  }
-
-  // Verificar si el token es válido
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Token de autenticación inválido" });
-    }
-
-    // Si el token es válido, adjunta el objeto decodificado (contiene información del usuario) al objeto de solicitud
-    req.user = decoded;
-
-    // Continuar con la solicitud
-    next();
-  });
-};
-
-// Aplicar el middleware de autenticación a todas las rutas del API de recetas
-app.use("/api/recetas", authenticateToken);
-
 // DEFINIR SERVIDORES ESTÁTICOS
 
 const staticServerPathWeb = "../public";
 app.use(express.static(staticServerPathWeb));
-
-

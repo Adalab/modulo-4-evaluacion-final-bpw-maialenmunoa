@@ -39,38 +39,38 @@ function CreateRecipe({ handleCreateRecipe }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
+    <form className="form" onSubmit={handleSubmit}>
+      <label className="form__label">
         Nombre:
-        <input
+        <input className="form__input"
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
       </label>
-      <label>
+      <label className="form__label">
         Ingredientes:
-        <textarea
+        <textarea className="form__textarea"
           value={ingredientes}
           onChange={(e) => setIngredientes(e.target.value)}
         />
       </label>
-      <label>
+      <label className="form__label">
         Instrucciones:
-        <textarea
+        <textarea className="form__textarea"
           value={instrucciones}
           onChange={(e) => setInstrucciones(e.target.value)}
         />
       </label>
-      <label>
+      <label className="form__label">
         Imagen (URL):
-        <input
+        <input className="form__input"
           type="text"
           value={imagen}
           onChange={(e) => setImagen(e.target.value)}
         />
       </label>
-      <button type="submit">Crear Receta</button>
+      <button className="form__button" type="submit">Crear Receta</button>
     </form>
   );
 }

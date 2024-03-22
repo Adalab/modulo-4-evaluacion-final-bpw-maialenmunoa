@@ -111,3 +111,46 @@ footer {
   text-align: center;
   margin-top: 50px;
 }
+
+.form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 40px
+}
+
+.form__label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.form__input,
+.form__textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.form__button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #392a08;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form__button:hover {
+  background-color: #e7f569;
+  color: #392a08;
+}
