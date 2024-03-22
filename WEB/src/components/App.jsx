@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 //Importar componentes
 import RecipeList from "../recipes/RecipeList";
 import Filters from "../filters/Filters";
+import CreateRecipe from "../pages/CreateRecipe";
 
 import "../scss/App.scss";
 
@@ -44,26 +45,25 @@ function App() {
     }
   };
 
-
-  // const handleCreate = () => {
-  //   //FETCH crear una nueva receta
-  //   fetch ("//localhost:3000/api/recetas", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       nombre: "Nombre de la receta",
-  //       ingredientes: "Ingredientes de la receta",
-  //       instrucciones: "Instrucciones de la receta",
-  //       imagen: "URL de la imagen",
-  //     }),
-  //   })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     setRecipes([...recipes, data]);
-  //   });
-  // };
+  const handleCreateRecipe = () => {
+    //FETCH crear una nueva receta
+    fetch ("//localhost:3000/api/recetas", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nombre: "Nombre de la receta",
+        ingredientes: "Ingredientes de la receta",
+        instrucciones: "Instrucciones de la receta",
+        imagen: "URL de la imagen",
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setRecipes([...recipes, data]);
+    });
+  };
 
   // const handleEdit = () => {
   //   //FETCH editar una receta
@@ -80,8 +80,11 @@ function App() {
       </header>
 
       <main className="main">
+      
         <Filters handleFilter={handleFilter} filterIngredient={filterIngredient}/>
         {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
+        <CreateRecipe onCreateRecipe={handleCreateRecipe} />
+        
       </main>
 
       <footer>
