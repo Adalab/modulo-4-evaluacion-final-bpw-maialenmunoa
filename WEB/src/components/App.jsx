@@ -45,24 +45,20 @@ function App() {
     }
   };
 
-  const handleCreateRecipe = () => {
-    //FETCH crear una nueva receta
-    fetch ("//localhost:3000/api/recetas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nombre: "Nombre de la receta",
-        ingredientes: "Ingredientes de la receta",
-        instrucciones: "Instrucciones de la receta",
-        imagen: "URL de la imagen",
-      }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setRecipes([...recipes, data]);
-    });
+  const handleCreateRecipe = async () => {
+    try {
+      // Realizar una nueva solicitud para obtener la lista actualizada de recetas
+      const response = await fetch("//localhost:3000/api/recetas");
+      const data = await response.json();
+      if (Array.isArray(data.results)) {
+        // Actualizar el estado de las recetas con la lista actualizada de recetas
+        setRecipes(data.results);
+      } else {
+        console.error("La respuesta de la API no es un array:", data);
+      }
+    } catch (error) {
+      console.error("Error al obtener las recetas:", error);
+    }
   };
 
   // const handleEdit = () => {
@@ -84,7 +80,7 @@ function App() {
         <Filters handleFilter={handleFilter} filterIngredient={filterIngredient}/>
         {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
         <CreateRecipe onCreateRecipe={handleCreateRecipe} />
-        
+
       </main>
 
       <footer>

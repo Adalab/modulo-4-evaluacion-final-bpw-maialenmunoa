@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function CreateRecipe({ onCreateRecipe }) {
+function CreateRecipe({ handleCreateRecipe }) {
   const [nombre, setNombre] = useState("");
   const [ingredientes, setIngredientes] = useState("");
   const [instrucciones, setInstrucciones] = useState("");
@@ -24,7 +24,7 @@ function CreateRecipe({ onCreateRecipe }) {
       });
       const data = await response.json();
       if (data.success) {
-        onCreateRecipe(data.id);
+        handleCreateRecipe(data.id);
         // Limpiar el formulario después de crear la receta
         setNombre("");
         setIngredientes("");
@@ -76,7 +76,7 @@ function CreateRecipe({ onCreateRecipe }) {
 }
 
 CreateRecipe.propTypes = {
-  onCreateRecipe: PropTypes.func.isRequired,
+    handleCreateRecipe: PropTypes.func.isRequired,
 };
 
 export default CreateRecipe;
