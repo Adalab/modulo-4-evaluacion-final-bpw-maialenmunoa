@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 
 // CREAR VARIABLES
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // CONFIGURACIÓN EXPRESS
 app.use(cors());
@@ -128,21 +128,22 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
     );
     connection.end(); // Cierra la conexión
 
-    // Verificar si se encontraron recetas con el ingrediente especificado
-    if (resultsIngredients.length > 0) {
-      return res.json(results);
-    } else {
-      return (
-        "No se encontraron recetas con el ingrediente especificado"
-      );
-    }
-  } catch (error) {
-    console.error("Error al obtener la receta por ingrediente:", error);
-    res.status(500).json({
+   // Verificar si se encontraron recetas con el ingrediente especificado
+   if (resultsIngredients.length > 0) {
+    return res.json(resultsIngredients);
+  } else {
+    return res.status(404).json({
       success: false,
-      message: "Ha ocurrido un error",
+      message: "No se encontraron recetas con el ingrediente especificado",
     });
   }
+} catch (error) {
+  console.error("Error al obtener la receta por ingrediente:", error);
+  res.status(500).json({
+    success: false,
+    message: "Ha ocurrido un error",
+  });
+}
 });
 
 // POST /api/recetas - Crear una nueva receta
