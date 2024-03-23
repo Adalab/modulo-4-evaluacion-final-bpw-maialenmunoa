@@ -40,7 +40,7 @@ JWT_SECRET=secreto_para_generar_jwt
 npm start
 ```
 
-¡Listo! La API debería estar funcionando en [http://localhost:3000](http://localhost:3000)
+¡Listo! La API estará funcionando en [http://localhost:3000](http://localhost:3000)
 
 ## Endpoints
 
@@ -117,12 +117,6 @@ Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, por fa
 3. Realiza tus cambios y haz commits (`git commit -am 'Agrega una nueva funcionalidad'`).
 4. Sube tus cambios al repositorio (`git push origin feature/nueva-funcionalidad`).
 5. Abre un Pull Request.
-
-## Visualización Frontend
-
-Para visualizar y utilizar el frontend de la API de Recetas, puedes acceder al siguiente [enlace](https://modulo-4-evaluacion-final-bpw.onrender.com/). 
-
-El frontend está desarrollado en React y te permite interactuar con los endpoints de la API de Recetas. Algunas funcionalidades aún están en desarrollo 😉
 
 ## Autoría 👩‍💻
 
