@@ -322,5 +322,5 @@ app.post("/login", async (req, res) => {
 
 // DEFINIR SERVIDORES ESTÁTICOS
 
-const staticServerPathWeb = "../public";
+const staticServerPathWeb = "./public";
 app.use(express.static(staticServerPathWeb));

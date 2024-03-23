@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "npx nodemon src/index.js",
     "deploy": "rm -rf public ; cd web && npm run build && cd .. && mv web/dist public",
-    "publish-react": "cd web && npm run build && cd .. && rm -rf public-react ; mv web/dist public-react"
+    "publish-react": "cd WEB && npm run build && cd .. && rm -rf public ; mv WEB/dist public"
   },
   "repository": {
     "type": "git",
