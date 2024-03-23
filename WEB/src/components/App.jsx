@@ -73,23 +73,25 @@ function App() {
     }
   };
 
-  const handleCreateRecipe = async () => {
+  const handleCreateRecipe = async (recipe) => {
     try {
-      // Realizar una nueva solicitud para obtener la lista actualizada de recetas
       const response = await fetch("//localhost:3000/api/recetas", {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(recipe),
       });
       const data = await response.json();
-      if (Array.isArray(data.results)) {
-        // Actualizar el estado de las recetas con la lista actualizada de recetas
-        setRecipes(data.results);
+      if (data.success) {
+        //Actualizamos lista de recetas
+        fetchRecipes();
       } else {
-        console.error("La respuesta de la API no es un array:", data);
+        console.error("Error al crear la receta:", data.message);
       }
     } catch (error) {
-      console.error("Error al obtener las recetas:", error);
+      console.error("Error al crear la receta:", error);
     }
   };
 
@@ -115,7 +117,7 @@ function App() {
               filterIngredient={filterIngredient}
             />
             {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
-            <CreateRecipe onCreateRecipe={handleCreateRecipe} />
+            <CreateRecipe handleCreateRecipe={handleCreateRecipe} />
           </>
         ) : (
           <LoginForm setToken={setToken} /> // Mostrar el formulario de inicio de sesión si el usuario no está autenticado

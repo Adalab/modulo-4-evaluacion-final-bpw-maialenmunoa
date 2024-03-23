@@ -9,33 +9,22 @@ function CreateRecipe({ handleCreateRecipe }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch("//localhost:3000/api/recetas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre,
-          ingredientes,
-          instrucciones,
-          imagen,
-        }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        handleCreateRecipe(data.id);
-        // Limpiar el formulario después de crear la receta
-        setNombre("");
-        setIngredientes("");
-        setInstrucciones("");
-        setImagen("");
-      } else {
-        console.error("Error al crear la receta:", data.message);
-      }
-    } catch (error) {
-      console.error("Error al crear la receta:", error);
-    }
+
+    let recipe = {
+      nombre,
+      ingredientes,
+      instrucciones,
+      imagen,
+    };
+
+    // Enviar la receta a App.jsx para que la cree en el servidor
+    handleCreateRecipe(recipe);
+
+    // Limpiar el formulario después de crear la receta
+    setNombre("");
+    setIngredientes("");
+    setInstrucciones("");
+    setImagen("");
   };
 
   return (
@@ -43,7 +32,8 @@ function CreateRecipe({ handleCreateRecipe }) {
       <h2 className="form__title">Nueva receta</h2>
       <label className="form__label">
         Nombre:
-        <input className="form__input"
+        <input
+          className="form__input"
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
@@ -51,33 +41,38 @@ function CreateRecipe({ handleCreateRecipe }) {
       </label>
       <label className="form__label">
         Ingredientes:
-        <textarea className="form__textarea"
+        <textarea
+          className="form__textarea"
           value={ingredientes}
           onChange={(e) => setIngredientes(e.target.value)}
         />
       </label>
       <label className="form__label">
         Instrucciones:
-        <textarea className="form__textarea"
+        <textarea
+          className="form__textarea"
           value={instrucciones}
           onChange={(e) => setInstrucciones(e.target.value)}
         />
       </label>
       <label className="form__label">
         Imagen (URL):
-        <input className="form__input"
+        <input
+          className="form__input"
           type="text"
           value={imagen}
           onChange={(e) => setImagen(e.target.value)}
         />
       </label>
-      <button className="form__button" type="submit">Crear Receta</button>
+      <button className="form__button" type="submit">
+        Crear Receta
+      </button>
     </form>
   );
 }
 
 CreateRecipe.propTypes = {
-    handleCreateRecipe: PropTypes.func.isRequired,
+  handleCreateRecipe: PropTypes.func.isRequired,
 };
 
 export default CreateRecipe;
