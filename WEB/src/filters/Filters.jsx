@@ -18,12 +18,12 @@ function Filters({ handleFilter, filterIngredient }) {
         <RadioFilter />
       </label>
 
-      {/* Botón de reset */}
+      {/* Botón de reset
       <button className="filters__reset" type="button">
         <span className="filters__trash-icon">
           <i className="fa-solid fa-trash-can"></i>
         </span>
-      </button>
+      </button> */}
     </form>
   );
 }

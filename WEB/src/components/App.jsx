@@ -105,8 +105,6 @@ function App() {
   //   //FETCH borrar una receta
   // };
 
-
-
   return (
     <div className="page">
       <header className="header">
@@ -114,27 +112,27 @@ function App() {
       </header>
 
       <main className="main">
-      <Routes>
-            <Route
-              path="/"
-              element={
-                isLoggedIn ? (
-                  <>
-                    <Filters
-                      handleFilter={handleFilter}
-                      filterIngredient={filterIngredient}
-                    />
-                    {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
-                    <CreateRecipe handleCreateRecipe={handleCreateRecipe} />
-                  </>
-                ) : (
-                  <LoginForm setToken={setToken} />
-                )
-              }
-            />
-            <Route path="/recipes" element={<RecipeList recipes={recipes} />} />
-            <Route path="/register" element={<RegisterForm token={token} />} />
-          </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <>
+                  <Filters
+                    handleFilter={handleFilter}
+                    filterIngredient={filterIngredient}
+                  />
+                  {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
+                  <CreateRecipe handleCreateRecipe={handleCreateRecipe} />
+                </>
+              ) : (
+                <LoginForm setToken={setToken} />
+              )
+            }
+          />
+          <Route path="/recipes" element={<RecipeList recipes={recipes} />} />
+          <Route path="/register" element={<RegisterForm token={token} />} />
+        </Routes>
       </main>
       <Footer />
     </div>

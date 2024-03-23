@@ -6,10 +6,14 @@ function RadioFilter() {
   return (
     <div className="filters__radio">
       <div className="filters__radio-div">
-        <input className="filters__radio-sweet" type="radio" id="sweet" name="type" value="sweet" />
-        <label htmlFor="sweet">
-          Dulce
-        </label>
+        <input
+          className="filters__radio-sweet"
+          type="radio"
+          id="sweet"
+          name="type"
+          value="sweet"
+        />
+        <label htmlFor="sweet">Dulce</label>
       </div>
       <div>
         <input
@@ -26,9 +30,6 @@ function RadioFilter() {
 }
 
 RadioFilter.propTypes = {
-  /**
-   * Filtro de búsqueda por tipo de receta
-   */
   onSearch: PropTypes.func,
 };
 
