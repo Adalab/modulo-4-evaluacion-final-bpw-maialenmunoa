@@ -120,7 +120,7 @@ Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, por fa
 
 ## Visualización Frontend
 
-Para visualizar y utilizar el frontend de la API de Recetas, puedes acceder al siguiente [enlace](URL_DEL_PROYECTO_FRONTEND). 
+Para visualizar y utilizar el frontend de la API de Recetas, puedes acceder al siguiente [enlace](https://modulo-4-evaluacion-final-bpw.onrender.com/). 
 
 El frontend está desarrollado en React y te permite interactuar con los endpoints de la API de Recetas. Algunas funcionalidades aún están en desarrollo 😉
 
