@@ -73,7 +73,7 @@ app.use("//localhost:3000/api/recetas", authenticateToken);
 // ENDPOINTS
 
 // GET /api/recetas - Obtener todas las recetas
-app.get("//localhost:3000/api/recetas", async (req, res) => {
+app.get("/api/recetas", async (req, res) => {
   try {
     const connection = await getConnection();
     const [queryGetRecipe] = await connection.query("SELECT * FROM recetas");
@@ -89,7 +89,7 @@ app.get("//localhost:3000/api/recetas", async (req, res) => {
 });
 
 // GET /api/recetas/:id - Obtener una receta por su id
-app.get("//localhost:3000/api/recetas/:id", async (req, res) => {
+app.get("/api/recetas/:id", async (req, res) => {
   const { id } = req.params; // Obtener el ID de la receta de los parámetros de la URL
 
   try {
@@ -117,7 +117,7 @@ app.get("//localhost:3000/api/recetas/:id", async (req, res) => {
 });
 
 // GET /api/recetas/ingrediente/:ingrediente - Obtener una receta por un ingrediente
-app.get("//localhost:3000/api/recetas/ingrediente/:ingrediente", async (req, res) => {
+app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
   const ingrediente = req.params.ingrediente;
 
   try {
@@ -147,7 +147,7 @@ app.get("//localhost:3000/api/recetas/ingrediente/:ingrediente", async (req, res
 });
 
 // POST /api/recetas - Crear una nueva receta
-app.post("//localhost:3000/api/recetas", async (req, res) => {
+app.post("/api/recetas", async (req, res) => {
   const { nombre, ingredientes, instrucciones, imagen } = req.body; // Obtener la información de la receta del body
 
   try {
@@ -177,7 +177,7 @@ app.post("//localhost:3000/api/recetas", async (req, res) => {
 });
 
 // PUT /api/recetas/:id - Actualizar una receta existente por su id
-app.put("//localhost:3000/api/recetas/:id", async (req, res) => {
+app.put("/api/recetas/:id", async (req, res) => {
   const recetaId = req.params.id;
   const { nombre, ingredientes, instrucciones, imagen } = req.body;
 
@@ -208,7 +208,7 @@ app.put("//localhost:3000/api/recetas/:id", async (req, res) => {
 });
 
 // DELETE /api/recetas/:id - Eliminar una receta por su id
-app.delete("//localhost:3000/api/recetas/:id", async (req, res) => {
+app.delete("/api/recetas/:id", async (req, res) => {
   const recetaId = req.params.id;
 
   try {
@@ -232,7 +232,7 @@ app.delete("//localhost:3000/api/recetas/:id", async (req, res) => {
 });
 
 //POST /registro - Crear un nuevo usuario en la base de datos
-app.post("//localhost:3000/registro", async (req, res) => {
+app.post("/registro", async (req, res) => {
   const { email, nombre, password } = req.body;
 
   try {
@@ -278,7 +278,7 @@ app.post("//localhost:3000/registro", async (req, res) => {
 });
 
 //POST /login - Iniciar sesión
-app.post("//localhost:3000/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {

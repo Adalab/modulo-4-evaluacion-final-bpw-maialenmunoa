@@ -38,7 +38,7 @@ function App() {
     if (!token) return;
 
     try {
-      const response = await fetch("/api/recetas", {
+      const response = await fetch("http://localhost:3000/api/recetas", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,7 +60,7 @@ function App() {
       setFilterIngredient(value);
       try {
         const response = await fetch(
-          `/api/recetas/ingrediente/${value}`,
+          `http://localhost:3000/api/recetas/ingrediente/${value}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -77,7 +77,7 @@ function App() {
 
   const handleCreateRecipe = async (recipe) => {
     try {
-      const response = await fetch("/api/recetas", {
+      const response = await fetch("http://localhost:3000/api/recetas", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
