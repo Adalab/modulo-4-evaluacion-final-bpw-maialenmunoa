@@ -37,7 +37,7 @@ function RegisterForm({token}) {
       setErrors(error);
     } else {
       try {
-        const response = await fetch("//localhost:3000/registro", {
+        const response = await fetch("/registro", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
