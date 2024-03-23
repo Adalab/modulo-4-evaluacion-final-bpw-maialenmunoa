@@ -67,7 +67,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Aplicar el middleware de autenticación a todas las rutas del API de recetas
+// Aplicar el middleware de autenticación a todas las rutas de la API de recetas
 app.use("/api/recetas", authenticateToken);
 
 // ENDPOINTS
@@ -76,12 +76,12 @@ app.use("/api/recetas", authenticateToken);
 app.get("/api/recetas", async (req, res) => {
   try {
     const connection = await getConnection();
-    const [rows] = await connection.query("SELECT * FROM recetas");
+    const [queryGetRecipe] = await connection.query("SELECT * FROM recetas");
     connection.end(); // Cerrar la conexión
 
-    const numOfElements = rows.length;
+    const numOfElements = queryGetRecipe.length;
 
-    res.json({ info: { count: numOfElements }, results: rows });
+    res.json({ info: { count: numOfElements }, results: queryGetRecipe });
   } catch (error) {
     console.error("Error al obtener las recetas:", error);
     res.status(500).json({ success: false, message: "Ha ocurrido un error" });
@@ -94,20 +94,20 @@ app.get("/api/recetas/:id", async (req, res) => {
 
   try {
     const connection = await getConnection();
-    const [rows] = await connection.query(
+    const [queryGetId] = await connection.query(
       "SELECT * FROM recetas WHERE id = ?",
       [id]
     );
     connection.end(); // Cierra la conexión
 
     // Comprobar si se encontró la receta
-    if (rows.length === 0) {
+    if (queryGetId.length === 0) {
       return res
         .status(404)
         .json({ success: false, message: "Oops! Receta no encontrada" });
     }
 
-    const recipe = rows[0]; // Obtener la primera (y única) fila de resultados
+    const recipe = queryGetId[0]; // Obtener la primera (y única) fila de resultados
 
     res.json({ success: true, recipe });
   } catch (error) {
@@ -122,17 +122,17 @@ app.get("/api/recetas/ingrediente/:ingrediente", async (req, res) => {
 
   try {
     const connection = await getConnection();
-    const [results] = await connection.query(
+    const [resultsIngredients] = await connection.query(
       "SELECT * FROM recetas WHERE ingredientes LIKE ?",
       [`%${ingrediente}%`]
     );
     connection.end(); // Cierra la conexión
 
     // Verificar si se encontraron recetas con el ingrediente especificado
-    if (results.length > 0) {
+    if (resultsIngredients.length > 0) {
       return res.json(results);
     } else {
-      throw new Error(
+      return (
         "No se encontraron recetas con el ingrediente especificado"
       );
     }
@@ -152,22 +152,22 @@ app.post("/api/recetas", async (req, res) => {
   try {
     // Verificar si los valores necesarios están definidos
     if (!nombre || !ingredientes || !instrucciones || !imagen) {
-      throw new Error("Uno o más campos de la receta no están definidos");
+      return ("Uno o más campos de la receta no están definidos");
     }
 
     const connection = await getConnection();
-    const [result] = await connection.execute(
+    const [resultNewRecipe] = await connection.execute(
       "INSERT INTO recetas (nombre, ingredientes, instrucciones, imagen) VALUES (?, ?, ?, ?)",
       [nombre, ingredientes, instrucciones, imagen]
     );
     connection.end(); // Cierra la conexión
 
     // Verificar si la inserción fue exitosa
-    if (result.affectedRows === 1) {
-      const nuevo_id = result.insertId;
+    if (resultNewRecipe.affectedRows === 1) {
+      const nuevo_id = resultNewRecipe.insertId;
       return res.json({ success: true, id: nuevo_id });
     } else {
-      throw new Error("No se pudo crear la receta");
+      return ("No se pudo crear la receta");
     }
   } catch (error) {
     console.error("Error al crear la receta:", error);
@@ -183,11 +183,11 @@ app.put("/api/recetas/:id", async (req, res) => {
   try {
     // Verificar si los valores necesarios están definidos
     if (!nombre || !ingredientes || !instrucciones || !imagen) {
-      throw new Error("Uno o más campos de la receta no están definidos");
+      return ("Uno o más campos de la receta no están definidos");
     }
 
     const connection = await getConnection();
-    const [result] = await connection.execute(
+    const [resultEditeRecipe] = await connection.execute(
       "UPDATE recetas SET nombre = ?, ingredientes = ?, instrucciones = ?, imagen = ? WHERE id = ?",
       [nombre, ingredientes, instrucciones, imagen, recetaId]
     );
@@ -195,10 +195,10 @@ app.put("/api/recetas/:id", async (req, res) => {
     connection.end(); // Cierra la conexión
 
     // Verificar si la actualización fue exitosa
-    if (result.affectedRows === 1) {
+    if (resultEditeRecipe.affectedRows === 1) {
       return res.json({ success: true });
     } else {
-      throw new Error("No se pudo actualizar la receta");
+      return ("No se pudo actualizar la receta");
     }
   } catch (error) {
     console.error("Error al actualizar la receta:", error);
@@ -212,17 +212,17 @@ app.delete("/api/recetas/:id", async (req, res) => {
 
   try {
     const connection = await getConnection();
-    const [result] = await connection.execute(
+    const [resultDeleteRecipe] = await connection.execute(
       "DELETE FROM recetas WHERE id = ?",
       [recetaId]
     );
     connection.end(); // Cierra la conexión
 
     // Verificar si la eliminación fue exitosa
-    if (result.affectedRows === 1) {
+    if (resultDeleteRecipe.affectedRows === 1) {
       return res.json({ success: true });
     } else {
-      throw new Error("No se pudo eliminar la receta");
+      return ("No se pudo eliminar la receta");
     }
   } catch (error) {
     console.error("Error al eliminar la receta:", error);
@@ -237,7 +237,7 @@ app.post("/registro", async (req, res) => {
   try {
     // Verificar si los campos requeridos están presentes
     if (!email || !nombre || !password) {
-      throw new Error("El email, nombre y contraseña son obligatorios");
+      return ("El email, nombre y contraseña son obligatorios");
     }
 
     // Verificar si el email ya existe en la base de datos
@@ -249,7 +249,7 @@ app.post("/registro", async (req, res) => {
     connection.end();
 
     if (existingUsers.length > 0) {
-      throw new Error("Este email ya está registrado");
+      return ("Este email ya está registrado");
     }
 
     // Hash de la contraseña
@@ -283,7 +283,7 @@ app.post("/login", async (req, res) => {
   try {
     // Verificar si los campos obligatorios están presentes
     if (!email || !password) {
-      throw new Error("El email y la contraseña son obligatorios");
+      return ("El email y la contraseña son obligatorios");
     }
 
     // Buscar al usuario en la base de datos usuarios_db
@@ -296,7 +296,7 @@ app.post("/login", async (req, res) => {
 
     // Verificar si se encontró un usuario con el email proporcionado
     if (users.length === 0) {
-      throw new Error("El email es incorrecto");
+      return ("El email es incorrecto");
     }
 
     const user = users[0]; // Obtener el primer email encontrado
@@ -304,7 +304,7 @@ app.post("/login", async (req, res) => {
     // Verificar si la contraseña coincide
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      throw new Error("La contraseña es incorrecta");
+      return ("La contraseña es incorrecta");
     }
 
     // Crear y devolver el token JWT
