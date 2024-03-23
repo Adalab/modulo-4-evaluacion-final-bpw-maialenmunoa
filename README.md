@@ -1,6 +1,6 @@
 # Recetas API Server
 
-Proyecto de creación de un servidor de API RESTful para gestionar recetas de cocina. Proporciona endpoints para crear, leer, actualizar y eliminar recetas, así como para registrarse e iniciar sesión como usuaria.
+Proyecto de creación de un servidor API RESTful para gestionar recetas de cocina. Proporciona endpoints para crear, ver, actualizar y eliminar recetas, así como para registrarse e iniciar sesión como usuaria.
 
 El servidor está implementado utilizando Node.js y Express, y se conecta a una base de datos MySQL para almacenar y recuperar la información de las recetas y los usuarios. Además, utiliza JSON Web Tokens (JWT) para autenticar a las usuarias en las solicitudes a la API.
 
@@ -15,7 +15,10 @@ El servidor está implementado utilizando Node.js y Express, y se conecta a una 
 
 ## Instalación
 
-1. Clona este repositorio.
+1. Clona este repositorio: 
+```bash
+https://github.com/Adalab/modulo-4-evaluacion-final-bpw-maialenmunoa.git
+```
 2. Instala las dependencias utilizando npm:
 
 ```bash
