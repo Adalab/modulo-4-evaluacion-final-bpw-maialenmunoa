@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 
 //Importar componentes
 import RecipeList from "../recipes/RecipeList";
 import Filters from "../filters/Filters";
 import CreateRecipe from "../pages/CreateRecipe";
+import RegisterForm from "../pages/RegisterForm";
 import LoginForm from "../pages/LoginForm";
 import Footer from "../components/Footer";
 
@@ -103,6 +105,8 @@ function App() {
   //   //FETCH borrar una receta
   // };
 
+
+
   return (
     <div className="page">
       <header className="header">
@@ -110,18 +114,27 @@ function App() {
       </header>
 
       <main className="main">
-        {isLoggedIn ? ( // Verificar si el usuario está autenticado
-          <>
-            <Filters
-              handleFilter={handleFilter}
-              filterIngredient={filterIngredient}
+      <Routes>
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <>
+                    <Filters
+                      handleFilter={handleFilter}
+                      filterIngredient={filterIngredient}
+                    />
+                    {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
+                    <CreateRecipe handleCreateRecipe={handleCreateRecipe} />
+                  </>
+                ) : (
+                  <LoginForm setToken={setToken} />
+                )
+              }
             />
-            {Array.isArray(recipes) && <RecipeList recipes={recipes} />}
-            <CreateRecipe handleCreateRecipe={handleCreateRecipe} />
-          </>
-        ) : (
-          <LoginForm setToken={setToken} /> // Mostrar el formulario de inicio de sesión si el usuario no está autenticado
-        )}
+            <Route path="/recipes" element={<RecipeList recipes={recipes} />} />
+            <Route path="/register" element={<RegisterForm token={token} />} />
+          </Routes>
       </main>
       <Footer />
     </div>

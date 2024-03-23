@@ -1,5 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 
 const LoginForm = ({ setToken }) => {
   const [email, setEmail] = useState("");
@@ -68,9 +70,11 @@ const LoginForm = ({ setToken }) => {
           Iniciar sesión
         </button>
       </form>
+      <Link to="/register">
       <button className="form__register-btn" type="submit">
         REGÍSTRATE
       </button>
+      </Link>
     </>
   );
 };
