@@ -40,6 +40,7 @@ function CreateRecipe({ handleCreateRecipe }) {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
+      <h2 className="form__title">Nueva receta</h2>
       <label className="form__label">
         Nombre:
         <input className="form__input"

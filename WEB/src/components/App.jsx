@@ -5,6 +5,7 @@ import RecipeList from "../recipes/RecipeList";
 import Filters from "../filters/Filters";
 import CreateRecipe from "../pages/CreateRecipe";
 import LoginForm from "../pages/LoginForm";
+import Footer from "../components/Footer";
 
 import "../scss/App.scss";
 
@@ -120,10 +121,7 @@ function App() {
           <LoginForm setToken={setToken} /> // Mostrar el formulario de inicio de sesión si el usuario no está autenticado
         )}
       </main>
-
-      <footer>
-        <p>© 2024 Mis Recetas</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -34,12 +34,12 @@ const LoginForm = ({ setToken }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Iniciar sesión</h2>
+    <form className="form" onSubmit={handleSubmit}>
+      <h2 className="form__title">Iniciar sesión</h2>
       {error && <div className="error">{error}</div>}
       <div>
-        <label htmlFor="email">Email:</label>
-        <input
+        <label className="form__label" htmlFor="email">Email:</label>
+        <input className="form__input"
           type="email"
           id="email"
           value={email}
@@ -48,8 +48,8 @@ const LoginForm = ({ setToken }) => {
         />
       </div>
       <div>
-        <label htmlFor="password">Contraseña:</label>
-        <input
+        <label className="form__label" htmlFor="password">Contraseña:</label>
+        <input className="form__input"
           type="password"
           id="password"
           value={password}
@@ -57,7 +57,7 @@ const LoginForm = ({ setToken }) => {
           required
         />
       </div>
-      <button type="submit">Iniciar sesión</button>
+      <button className="form__button" type="submit">Iniciar sesión</button>
     </form>
   );
 };
