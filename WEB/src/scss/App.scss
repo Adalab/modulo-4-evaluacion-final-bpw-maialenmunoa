@@ -18,14 +18,14 @@
 
 .header {
   text-align: center;
-  padding: 30px 0;
+  padding: 40px 0;
   color: #392a08;
   font-family: "title";
   font-size: 2rem;
 }
 
 .main {
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .filters {
@@ -116,7 +116,8 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 40px
+  margin-top: 80px;
+  margin-bottom: 100px;
 }
 
 .form__label {
@@ -163,8 +164,30 @@
   color: #392a08;
 }
 
+.form__register-btn {
+  padding: 10px;
+  background-color: #fff;
+  color: #392a08;
+  border: 1.5px solid #392a08; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  font-style: normal;
+  width: 130px;
+  //centrar el botón
+  display: block;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.form__register-btn:hover {
+  background-color: #e7f569;
+  color: #392a08;
+}
+
 .footer {
-  position: fixed; 
   bottom: 0; 
   width: 100%; 
   background-color: #f9f9f9; 
